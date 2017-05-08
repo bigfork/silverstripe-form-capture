@@ -1,6 +1,6 @@
 {
   "name": "andrewhaine/silverstripe-form-capture",
-  "description": "Provides a method to capture simple silverstripe forms and provides a friendly admin interface for users",
+  "description": "Provides a method to capture simple silverstripe forms and a friendly admin interface for users",
   "type": "silverstripe-module",
   "homepage": "http://github.com/andrewhaine/silverstripe-form-capture",
   "keywords": ["silverstripe", "forms", "capture"],
@@ -12,7 +12,7 @@
     "issues": "http://github.com/andrewhaine/silverstripe-form-capture/issues"
   },
   "require": {
-    "silverstripe/cms": "~3.1",
-    "silverstripe/framework": "~3.1"
+    "silverstripe/cms": "3.*",
+    "silverstripe/framework": "3.*"
   }
 }

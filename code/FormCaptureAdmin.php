@@ -8,7 +8,7 @@ class FormCaptureAdmin extends ModelAdmin
 
 	private static $managed_models = ['CapturedFormSubmission'];
 
-	private static $menu_icon ='formcapture/icon/captured-form-submissions.png';
+	private static $menu_icon ='silverstripe-form-capture/icon/captured-form-submissions.png';
 
 	/**
 	 * @param Int $id
