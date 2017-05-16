@@ -1,6 +1,6 @@
 <?php
 
-class CapturedFormSubmission extends DataObject
+class CapturedFormSubmission extends DataObject implements PermissionProvider
 {
 	private static $singular_name = 'Form Submission';
 
@@ -21,6 +21,35 @@ class CapturedFormSubmission extends DataObject
 	[
 		'CapturedFields' => 'CapturedField'
 	];
+
+	public function providePermissions() {
+		return [
+			'VIEW_FORM_SUBMISSIONS' => [
+				'name' => 'View Submissions',
+				'category' => 'Form Submissions'
+			],
+			'DELETE_FORM_SUBMISSIONS' => [
+				'name' => 'Delete Submissions',
+				'category' => 'Form Submissions'
+			]
+		];
+	}
+
+	public function canView($member = null) {
+		return Permission::check('VIEW_FORM_SUBMISSIONS');
+	}
+
+	public function canDelete($member= null) {
+		return Permission::check('DELETE_FORM_SUBMISSIONS');
+	}
+
+	public function canEdit($member = null) {
+		return Permission::check('VIEW_FORM_SUBMISSIONS');
+	}
+
+	public function canCreate($member = null) {
+		return false;
+	}
 
 	/**
 	 * CMS Fields

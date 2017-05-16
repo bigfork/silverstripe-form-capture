@@ -8,6 +8,21 @@ class CapturedField extends DataObject
 
 	private static $summary_fields = ['Name', 'Value'];
 
+	public function canView($member = null) {
+		return Permission::check('VIEW_FORM_SUBMISSIONS');
+	}
+
+	public function canDelete($member= null) {
+		return Permission::check('DELETE_FORM_SUBMISSIONS');
+	}
+
+	public function canEdit($member = null) {
+		return Permission::check('VIEW_FORM_SUBMISSIONS');
+	}
+
+	public function canCreate($member = null) {
+		return false;
+	}
 
 	private static $db =
 	[
