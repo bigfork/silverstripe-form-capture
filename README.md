@@ -60,7 +60,7 @@ public function doMyForm($data, $form) {
 When calling the captureForm() method it is required that the Form to be stored is passed as the first parameter, there are two additional parameters which are optional:
 
 * __Form Submission Title__ - A string which will be displayed as the submission title in the admin area (defaults to 'Form Submission').
-* __Excluded Fields__ - An array of field names which will not be stored.
+* __Excluded Fields__ - An array of field names which will not be stored, this can also be a string containing the name of a single field to exclude.
 
 #### Example
 

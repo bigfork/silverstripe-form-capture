@@ -4,7 +4,9 @@ class CapturedFormExtension extends Extension
 {
 	/**
 	 * Add a method to Form which will capture data when invoked
-	 * @param Form $form string $dataName Array $excludedFields
+	 * @param Form $form The form to be captured
+	 * @param string $dataName Am optional name for the submission
+	 * @param mixed $excludedFields An array or string of fields to be ignored when saving the submission
 	 * @return null
 	 */
 	public function captureForm(Form $form, $dataName = 'Form Submission', $excludedFields = []) {
@@ -16,6 +18,9 @@ class CapturedFormExtension extends Extension
 
 		// Grab all the fields
 		$fieldsToWrite = $form->fields->dataFields();
+
+		// Allow the excluded fields to be a single string
+		$excludedFields = is_array($excludedFields) ? $excludedFields : [$excludedFields];
 
 		// Ignore SecurityID by default
 		array_push($excludedFields, 'SecurityID');
