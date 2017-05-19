@@ -7,9 +7,10 @@ class CapturedFormExtension extends Extension
 	 * @param Form $form The form to be captured
 	 * @param string $dataName Am optional name for the submission
 	 * @param mixed $excludedFields An array or string of fields to be ignored when saving the submission
+	 * @param mixed $inDetails Fields to be included in the 'details' column in the admin area
 	 * @return null
 	 */
-	public function captureForm(Form $form, $dataName = 'Form Submission', $excludedFields = []) {
+	public function captureForm(Form $form, $dataName = 'Form Submission', $excludedFields = [], $inDetails = []) {
 
 		// Create a blank form submission and write to database so that we have an ID to work with
 		$submission = CapturedFormSubmission::create();
@@ -19,8 +20,9 @@ class CapturedFormExtension extends Extension
 		// Grab all the fields
 		$fieldsToWrite = $form->fields->dataFields();
 
-		// Allow the excluded fields to be a single string
+		// Allow the excluded fields and details fields to be a single string
 		$excludedFields = is_array($excludedFields) ? $excludedFields : [$excludedFields];
+		$inDetails = is_array($inDetails) ? $inDetails : [$inDetails];
 
 		// Ignore SecurityID by default
 		array_push($excludedFields, 'SecurityID');
@@ -41,6 +43,7 @@ class CapturedFormExtension extends Extension
 			$val->Name = $field->Name;
 			$val->Title = $field->Title() ?: $field->Name;
 			$val->Value = $field->dataValue();
+			$val->IsInDetails = in_array($field->Name, $inDetails) ? '1' : '0';
 			$val->write();
 		}
 	}

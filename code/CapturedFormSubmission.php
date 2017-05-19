@@ -6,7 +6,7 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 
 	private static $plural_name = 'Form Submissions';
 
-	private static $summary_fields = ['Type', 'Created.Nice'];
+	private static $summary_fields = ['Type', 'Created.Nice', 'Details'];
 
 	private static $field_labels = ['Created.Nice' => 'Submitted on'];
 
@@ -77,5 +77,24 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 		$fields->fieldByName('Root.Main')->setTitle($this->Type);
 
 		return $fields;
+	}
+
+	public function Details() {
+		$html = HTMLText::create();
+		$toAdd = [];
+
+		// Loop through all fields marked for inclusion in the details tab
+		foreach($this->CapturedFields()->filter(['IsInDetails' => '1']) as $field) {
+
+			if(!$field->Value) continue;
+
+			$htmlEnt = '<strong>'. $field->Title .'</strong>: '. $field->Value;
+			array_push($toAdd, $htmlEnt);
+
+		}
+
+		$html->setValue(join('<br />', $toAdd));
+
+		return $html;
 	}
 }

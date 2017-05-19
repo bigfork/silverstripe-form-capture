@@ -61,9 +61,10 @@ When calling the captureForm() method it is required that the Form to be stored 
 
 * __Form Submission Title__ - A string which will be displayed as the submission title in the admin area (defaults to 'Form Submission').
 * __Excluded Fields__ - An array of field names which will not be stored, this can also be a string containing the name of a single field to exclude.
+* __Details Fields__ - An array of fields which will be included in the 'details' column of the gridfield, this can also be a string containing the name of a single field to exclude.
 
 #### Example
 
 ```php
-$form->captureForm($form, 'Contact Form Submission', ['IDontWantThisField', 'OrThisOne']);
+$form->captureForm($form, 'Contact Form Submission', ['IDontWantThisField', 'OrThisOne'], 'Details');
 ```

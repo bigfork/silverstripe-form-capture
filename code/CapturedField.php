@@ -28,7 +28,8 @@ class CapturedField extends DataObject
 	[
 		'Name' => 'Text',
 		'Title' => 'Text',
-		'Value' => 'Text'
+		'Value' => 'Text',
+		'IsInDetails' => 'Boolean'
 	];
 
 	private static $has_one =
