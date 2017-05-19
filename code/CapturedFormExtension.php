@@ -42,8 +42,18 @@ class CapturedFormExtension extends Extension
 			$field->performReadonlyTransformation();
 			$val->Name = $field->Name;
 			$val->Title = $field->Title() ?: $field->Name;
-			$val->Value = $field->dataValue();
 			$val->IsInDetails = in_array($field->Name, $inDetails) ? '1' : '0';
+
+			// Add to this statement if any future type-based value conversions are required
+			switch ($field->Type()) {
+				case 'checkbox':
+						$val->Value = $field->dataValue() === 1 ? 'Yes' : 'No';
+					break;
+				default:
+						$val->Value = $field->dataValue();
+					break;
+			}
+
 			$val->write();
 		}
 	}
