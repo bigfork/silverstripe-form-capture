@@ -6,7 +6,7 @@ class CapturedField extends DataObject
 
 	private static $plural_name = 'Captured Fields';
 
-	private static $summary_fields = ['Name', 'Value'];
+	private static $summary_fields = ['Title', 'Value'];
 
 	public function canView($member = null) {
 		return Permission::check('VIEW_FORM_SUBMISSIONS');

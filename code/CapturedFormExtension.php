@@ -39,7 +39,7 @@ class CapturedFormExtension extends Extension
 
 			$field->performReadonlyTransformation();
 			$val->Name = $field->Name;
-			$val->Title = $field->Title();
+			$val->Title = $field->Title() ?: $field->Name;
 			$val->Value = $field->dataValue();
 			$val->write();
 		}
