@@ -97,4 +97,20 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 
 		return $html;
 	}
+
+	/**
+	 * Ensure that all linked fields are deleted
+	 * so we don't leave any stale data behind
+	 */
+	 public function onBeforeDelete()
+	 {
+
+		 if($this->CapturedFields()) {
+			 foreach($this->CapturedFields() as $field) {
+				 $field->delete();
+			 }
+		 }
+
+		 parent::onBeforeDelete();
+	 }
 }
