@@ -5,7 +5,7 @@ Provides a method to capture simple silverstripe forms and a friendly admin inte
 Either clone/download this repository into a folder named 'silverstripe-form-capture' or run:
 
 ```
-composer require andrewhaine/silverstripe-form-capture dev-master
+composer require andrewhaine/silverstripe-form-capture
 ```
 
 ## Initialisation
