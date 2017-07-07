@@ -47,10 +47,35 @@ class CapturedFormExtension extends Extension
 			// Add to this statement if any future type-based value conversions are required
 			switch ($field->Type()) {
 				case 'checkbox':
+
 						$val->Value = $field->dataValue() === 1 ? 'Yes' : 'No';
+
+					break;
+				case 'groupeddropdown dropdown':
+
+					// Relevent values
+					$groupedSrc = $field->getSourceAsArray();
+					$selected = $field->dataValue();
+
+					// Loop through all source keys, if we find an array search it for the field value
+					foreach ($groupedSrc as $key => $option) {
+
+						if(is_array($option) && array_search($selected, $option)) {
+
+						// If there's a match return the key holding the value
+						$catForVal = $key;
+
+						}
+					}
+
+					// Formatted value for CMS Display
+					$val->Value = $catForVal ? '[' . $catForVal .'] ' . $selected : $selected;
+
 					break;
 				default:
-						$val->Value = $field->dataValue();
+
+					$val->Value = $field->dataValue();
+
 					break;
 			}
 
