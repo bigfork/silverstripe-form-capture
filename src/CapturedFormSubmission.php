@@ -1,5 +1,17 @@
 <?php
 
+namespace SSFormCapture;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\Security\PermissionProvider;
+use SilverStripe\Security\Permission;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldConfig;
+use SilverStripe\Forms\GridField\GridFieldDataColumns;
+use SilverStripe\Forms\GridField\GridFieldExportButton;
+use SilverStripe\Forms\GridField\GridFieldPrintButton;
+use SilverStripe\ORM\FieldType\DBHTMLText;
+use SilverStripe\Forms\HeaderField;
+
 class CapturedFormSubmission extends DataObject implements PermissionProvider
 {
 	private static $singular_name = 'Form Submission';
@@ -19,7 +31,7 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 
 	private static $has_many =
 	[
-		'CapturedFields' => 'CapturedField'
+		'CapturedFields' => CapturedField::class
 	];
 
 	public function providePermissions() {
@@ -61,7 +73,10 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 
 		$fields->removeByName(['CapturedFields', 'Type']);
 
-		$fields->addFieldToTab("Root.Main", LiteralField::create('SubmissionName', '<h2>'. $this->Type . '</h2>'));
+		$fields->addFieldsToTab("Root.Main", [
+            HeaderField::create('SubmissionName', $this->Type),
+            HeaderField::create('SubmissionDate', $this->dbObject('Created')->format('dd/MM/yyyy hh:mm'), 3)
+        ]);
 
 		$submittedFields = GridField::create('CapturedFields', 'Form Fields', $this->CapturedFields()->sort('Created', 'ASC'));
 
@@ -80,7 +95,7 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 	}
 
 	public function Details() {
-		$html = HTMLText::create();
+		$html = DBHTMLText::create();
 		$toAdd = [];
 
 		// Loop through all fields marked for inclusion in the details tab

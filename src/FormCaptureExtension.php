@@ -1,6 +1,9 @@
 <?php
 
-class CapturedFormExtension extends Extension
+namespace SSFormCapture;
+use SilverStripe\Core\Extension;
+
+class FormCaptureExtension extends Extension
 {
 	/**
 	 * Add a method to Form which will capture data when invoked
@@ -72,6 +75,20 @@ class CapturedFormExtension extends Extension
 					// Formatted value for CMS Display
 					$val->Value = $catForVal ? '[' . $catForVal .'] ' . $selected : $selected;
 
+					break;
+                case 'groupeddropdown dropdown':
+					// Relevent values
+					$groupedSrc = $field->getSourceAsArray();
+					$selected = $field->dataValue();
+					// Loop through all source keys, if we find an array search it for the field value
+					foreach ($groupedSrc as $key => $option) {
+						if(is_array($option) && array_search($selected, $option)) {
+						// If there's a match return the key holding the value
+						$catForVal = $key;
+						}
+					}
+					// Formatted value for CMS Display
+					$val->Value = $catForVal ? '[' . $catForVal .'] ' . $selected : $selected;
 					break;
 				default:
 
