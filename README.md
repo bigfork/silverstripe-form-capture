@@ -9,7 +9,7 @@ This version requires silverstripe 4, for 3.1+ compatibility see the 1.* branch.
 Either clone/download this repository into a folder named 'silverstripe-form-capture' or run:
 
 ```
-composer require andrewhaine/silverstripe-form-capture ~2.0
+composer require andrewhaine/silverstripe-form-capture
 ```
 
 ## Initialisation
@@ -55,11 +55,7 @@ public function doMyForm($data, $form) {
 ```
 
 ### Options
-<<<<<<< HEAD
-Call the captureForm() method on a form you wish to store the data of, optional parameters can be passed as follows:
-=======
 When calling the captureForm() there are a few optional parameters which will enhance how submission objects are displayed in the CMS.
->>>>>>> master
 
 * __Form Submission Title__ - A string which will be displayed as the submission title in the admin area (defaults to 'Form Submission').
 * __Excluded Fields__ - An array of field names which will not be stored, this can also be a string containing the name of a single field to exclude.
