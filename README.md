@@ -50,14 +50,14 @@ public function MyForm() {
 }
 
 public function doMyForm($data, $form) {
-	$form->captureForm($form);
+	$form->captureForm();
 
 	// Other processing
 }
 ```
 
 ### Options
-When calling the captureForm() method it is required that the Form to be stored is passed as the first parameter, there are two additional parameters which are optional:
+When calling the captureForm() there are a few optional parameters which will enhance how submission objects are displayed in the CMS.
 
 * __Form Submission Title__ - A string which will be displayed as the submission title in the admin area (defaults to 'Form Submission').
 * __Excluded Fields__ - An array of field names which will not be stored, this can also be a string containing the name of a single field to exclude.
@@ -66,5 +66,5 @@ When calling the captureForm() method it is required that the Form to be stored 
 #### Example
 
 ```php
-$form->captureForm($form, 'Contact Form Submission', ['IDontWantThisField', 'OrThisOne'], 'Details');
+$form->captureForm('Contact Form Submission', ['IDontWantThisField', 'OrThisOne'], 'Details');
 ```

@@ -4,13 +4,14 @@ class CapturedFormExtension extends Extension
 {
 	/**
 	 * Add a method to Form which will capture data when invoked
-	 * @param Form $form The form to be captured
 	 * @param string $dataName Am optional name for the submission
 	 * @param mixed $excludedFields An array or string of fields to be ignored when saving the submission
 	 * @param mixed $inDetails Fields to be included in the 'details' column in the admin area
 	 * @return null
 	 */
-	public function captureForm(Form $form, $dataName = 'Form Submission', $excludedFields = [], $inDetails = []) {
+	public function captureForm($dataName = 'Form Submission', $excludedFields = [], $inDetails = []) {
+
+        $form = $this->owner;
 
 		// Create a blank form submission and write to database so that we have an ID to work with
 		$submission = CapturedFormSubmission::create();
