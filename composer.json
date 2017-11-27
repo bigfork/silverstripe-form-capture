@@ -12,7 +12,7 @@
     "issues": "http://github.com/andrewhaine/silverstripe-form-capture/issues"
   },
   "require": {
-    "silverstripe/cms": "3.*",
-    "silverstripe/framework": "3.*"
+    "silverstripe/cms": "~4.0",
+    "silverstripe/framework": "~4.0"
   }
 }

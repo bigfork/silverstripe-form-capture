@@ -5,7 +5,7 @@ Provides a method to capture simple silverstripe forms and a friendly admin inte
 Either clone/download this repository into a folder named 'silverstripe-form-capture' or run:
 
 ```
-composer require andrewhaine/silverstripe-form-capture dev-master
+composer require andrewhaine/silverstripe-form-capture ~2.0
 ```
 
 ## Initialisation
@@ -13,18 +13,12 @@ After installing you will need to run 'dev/build' and add the module extension t
 
 ### Adding the extension:
 
-In 'config.yml':
+In 'mysite.yml':
 
 ```yaml
-Form:
+SilverStripe\Forms\Form:
   extensions:
-    - CapturedFormExtension
-```
-
-Or alternatively in '\_config.php'
-
-```php
-Form::add_extension('CapturedFormExtension');
+    - SSFormCapture\FormCaptureExtension
 ```
 
 ## Usage
@@ -50,14 +44,14 @@ public function MyForm() {
 }
 
 public function doMyForm($data, $form) {
-	$form->captureForm($form);
+	$form->captureForm();
 
 	// Other processing
 }
 ```
 
 ### Options
-When calling the captureForm() method it is required that the Form to be stored is passed as the first parameter, there are two additional parameters which are optional:
+Call the captureForm() method on a form you wish to store the data of, optional parameters can be passed as follows:
 
 * __Form Submission Title__ - A string which will be displayed as the submission title in the admin area (defaults to 'Form Submission').
 * __Excluded Fields__ - An array of field names which will not be stored, this can also be a string containing the name of a single field to exclude.
@@ -66,5 +60,5 @@ When calling the captureForm() method it is required that the Form to be stored 
 #### Example
 
 ```php
-$form->captureForm($form, 'Contact Form Submission', ['IDontWantThisField', 'OrThisOne'], 'Details');
+$form->captureForm('Contact Form Submission', ['IDontWantThisField', 'OrThisOne'], 'Details');
 ```

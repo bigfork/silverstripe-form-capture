@@ -1,5 +1,10 @@
 <?php
 
+namespace SSFormCapture;
+
+use SilverStripe\ORM\DataObject;
+use SilverStripe\Security\Permission;
+
 class CapturedField extends DataObject
 {
 	private static $singular_name = 'CapturedField';
@@ -34,6 +39,6 @@ class CapturedField extends DataObject
 
 	private static $has_one =
 	[
-		'Submission' => 'CapturedFormSubmission'
+		'Submission' => CapturedFormSubmission::class
 	];
 }

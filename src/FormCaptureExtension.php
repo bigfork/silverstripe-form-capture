@@ -1,6 +1,10 @@
 <?php
 
-class CapturedFormExtension extends Extension
+namespace SSFormCapture;
+use SilverStripe\Core\Extension;
+use SilverStripe\Forms\Form;
+
+class FormCaptureExtension extends Extension
 {
 	/**
 	 * Add a method to Form which will capture data when invoked
@@ -10,7 +14,9 @@ class CapturedFormExtension extends Extension
 	 * @param mixed $inDetails Fields to be included in the 'details' column in the admin area
 	 * @return null
 	 */
-	public function captureForm(Form $form, $dataName = 'Form Submission', $excludedFields = [], $inDetails = []) {
+	public function captureForm($dataName = 'Form Submission', $excludedFields = [], $inDetails = []) {
+
+        $form = $this->owner;
 
 		// Create a blank form submission and write to database so that we have an ID to work with
 		$submission = CapturedFormSubmission::create();
