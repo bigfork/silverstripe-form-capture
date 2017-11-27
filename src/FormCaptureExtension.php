@@ -2,13 +2,11 @@
 
 namespace SSFormCapture;
 use SilverStripe\Core\Extension;
-use SilverStripe\Forms\Form;
 
 class FormCaptureExtension extends Extension
 {
 	/**
 	 * Add a method to Form which will capture data when invoked
-	 * @param Form $form The form to be captured
 	 * @param string $dataName Am optional name for the submission
 	 * @param mixed $excludedFields An array or string of fields to be ignored when saving the submission
 	 * @param mixed $inDetails Fields to be included in the 'details' column in the admin area

@@ -1,7 +1,11 @@
 # Silverstripe Form Capture
 Provides a method to capture simple silverstripe forms and a friendly admin interface for users.
 
+<img src="docs/images/screenshot.png" width="900" height="417" />
+
 ## Installation
+This version requires silverstripe 4, for 3.1+ compatibility see the 1.* branch.
+
 Either clone/download this repository into a folder named 'silverstripe-form-capture' or run:
 
 ```
