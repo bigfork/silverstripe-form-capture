@@ -1,0 +1,6 @@
+---
+Name: ssformcapture
+---
+SilverStripe\Admin\LeftAndMain:
+  extra_requirements_css:
+    - silverstripe-form-capture/css/cms.css
