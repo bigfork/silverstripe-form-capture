@@ -2,6 +2,8 @@
 
 namespace SSFormCapture\Extension;
 use SilverStripe\Core\Extension;
+use SSFormCapture\Model\CapturedFormSubmission;
+use SSFormCapture\Model\CapturedField;
 
 class FormCaptureExtension extends Extension
 {
