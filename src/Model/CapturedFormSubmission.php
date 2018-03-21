@@ -64,7 +64,7 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 		return Permission::check('VIEW_FORM_SUBMISSIONS');
 	}
 
-	public function canCreate($member = null) {
+	public function canCreate($member = null, $context = []) {
 		return false;
 	}
 

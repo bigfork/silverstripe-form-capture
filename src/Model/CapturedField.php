@@ -16,7 +16,7 @@ class CapturedField extends DataObject
 
 	private static $summary_fields = ['Title', 'Value'];
 
-	public function canView($member = null, $context = []) {
+	public function canView($member = null) {
 		return Permission::check('VIEW_FORM_SUBMISSIONS');
 	}
 
