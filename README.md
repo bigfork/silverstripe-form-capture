@@ -15,16 +15,6 @@ composer require andrewhaine/silverstripe-form-capture
 ## Initialisation
 After installing you will need to run 'dev/build' and add the module extension to the form class or any subclass of form that you wish to store.
 
-### Adding the extension:
-
-In 'mysite.yml':
-
-```yaml
-SilverStripe\Forms\Form:
-  extensions:
-    - SSFormCapture\Extension\FormCaptureExtension
-```
-
 ## Usage
 To store submissions from a form simply add a call to the new method in the function you will use to handle the form. See the example below for usage
 

@@ -1,3 +1,6 @@
 ---
 Name: ssformcapture
 ---
+SilverStripe\Forms\Form:
+  extensions:
+    - SSFormCapture\Extension\FormCaptureExtension
