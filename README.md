@@ -22,7 +22,7 @@ In 'mysite.yml':
 ```yaml
 SilverStripe\Forms\Form:
   extensions:
-    - SSFormCapture\FormCaptureExtension
+    - SSFormCapture\Extension\FormCaptureExtension
 ```
 
 ## Usage

@@ -1,6 +1,6 @@
 <?php
 
-namespace SSFormCapture;
+namespace SSFormCapture\Model;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\PermissionProvider;
 use SilverStripe\Security\Permission;
@@ -11,14 +11,20 @@ use SilverStripe\Forms\GridField\GridFieldExportButton;
 use SilverStripe\Forms\GridField\GridFieldPrintButton;
 use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\Forms\HeaderField;
+use SSFormCapture\Model\CapturedField;
 
 class CapturedFormSubmission extends DataObject implements PermissionProvider
 {
+
+	private static $table_name = 'FormCapture_FormSubmission';
+
 	private static $singular_name = 'Form Submission';
 
 	private static $plural_name = 'Form Submissions';
 
 	private static $summary_fields = ['Type', 'Created.Nice', 'Details'];
+
+	private static $searchable_fields = ['Type'];
 
 	private static $field_labels = ['Created.Nice' => 'Submitted on'];
 
@@ -34,16 +40,15 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 		'CapturedFields' => CapturedField::class
 	];
 
-	public function providePermissions() {
+	/**
+	 * @return array
+	 */
+	public function providePermissions()
+	{
+
 		return [
-			'VIEW_FORM_SUBMISSIONS' => [
-				'name' => 'View Submissions',
-				'category' => 'Form Submissions'
-			],
-			'DELETE_FORM_SUBMISSIONS' => [
-				'name' => 'Delete Submissions',
-				'category' => 'Form Submissions'
-			]
+			'VIEW_FORM_SUBMISSIONS' => 'View Submissions',
+			'DELETE_FORM_SUBMISSIONS' => 'Delete Submissions'
 		];
 	}
 
@@ -82,8 +87,8 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 
 		$conf = GridFieldConfig::create();
 		$conf->addComponent(new GridFieldDataColumns());
-        $conf->addComponent(new GridFieldExportButton());
-        $conf->addComponent(new GridFieldPrintButton());
+    $conf->addComponent(new GridFieldExportButton());
+    $conf->addComponent(new GridFieldPrintButton());
 
 		$submittedFields->setConfig($conf);
 

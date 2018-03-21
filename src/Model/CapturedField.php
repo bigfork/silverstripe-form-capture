@@ -1,19 +1,22 @@
 <?php
 
-namespace SSFormCapture;
+namespace SSFormCapture\Model;
 
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Permission;
 
 class CapturedField extends DataObject
 {
+
+	private static $table_name = 'FormCapture_CapturedField';
+
 	private static $singular_name = 'CapturedField';
 
 	private static $plural_name = 'Captured Fields';
 
 	private static $summary_fields = ['Title', 'Value'];
 
-	public function canView($member = null) {
+	public function canView($member = null, $context = []) {
 		return Permission::check('VIEW_FORM_SUBMISSIONS');
 	}
 
@@ -25,7 +28,7 @@ class CapturedField extends DataObject
 		return Permission::check('VIEW_FORM_SUBMISSIONS');
 	}
 
-	public function canCreate($member = null) {
+	public function canCreate($member = null, $context = []) {
 		return false;
 	}
 

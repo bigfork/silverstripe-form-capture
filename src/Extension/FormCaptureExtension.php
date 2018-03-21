@@ -1,6 +1,6 @@
 <?php
 
-namespace SSFormCapture;
+namespace SSFormCapture\Extension;
 use SilverStripe\Core\Extension;
 
 class FormCaptureExtension extends Extension
@@ -49,53 +49,40 @@ class FormCaptureExtension extends Extension
 			$val->IsInDetails = in_array($field->Name, $inDetails) ? '1' : '0';
 
 			// Add to this statement if any future type-based value conversions are required
-			switch ($field->Type()) {
-				case 'checkbox':
+            switch ($field->Type()) {
 
-						$val->Value = $field->dataValue() === 1 ? 'Yes' : 'No';
+                case 'checkbox':
 
-					break;
-				case 'groupeddropdown dropdown':
+                    $val->Value = $field->dataValue() === 1 ? 'Yes' : 'No';
 
-					// Relevent values
-					$groupedSrc = $field->getSourceAsArray();
-					$selected = $field->dataValue();
+                break;
 
-					// Loop through all source keys, if we find an array search it for the field value
-					foreach ($groupedSrc as $key => $option) {
-
-						if(is_array($option) && array_search($selected, $option)) {
-
-						// If there's a match return the key holding the value
-						$catForVal = $key;
-
-						}
-					}
-
-					// Formatted value for CMS Display
-					$val->Value = $catForVal ? '[' . $catForVal .'] ' . $selected : $selected;
-
-					break;
                 case 'groupeddropdown dropdown':
-					// Relevent values
-					$groupedSrc = $field->getSourceAsArray();
-					$selected = $field->dataValue();
-					// Loop through all source keys, if we find an array search it for the field value
-					foreach ($groupedSrc as $key => $option) {
-						if(is_array($option) && array_search($selected, $option)) {
-						// If there's a match return the key holding the value
-						$catForVal = $key;
-						}
-					}
-					// Formatted value for CMS Display
-					$val->Value = $catForVal ? '[' . $catForVal .'] ' . $selected : $selected;
-					break;
-				default:
 
-					$val->Value = $field->dataValue();
+                    // Relevent values
+                    $groupedSrc = $field->getSourceAsArray();
+                    $selected = $field->dataValue();
 
-					break;
-			}
+                    // Loop through all source keys, if we find an array search it for the field value
+                    foreach ($groupedSrc as $key => $option) {
+                        if(is_array($option) && array_search($selected, $option)) {
+                            // If there's a match return the key holding the value
+                            $catForVal = $key;
+
+                        }
+                    }
+
+                    // Formatted value for CMS Display
+                    $val->Value = $catForVal ? '[' . $catForVal .'] ' . $selected : $selected;
+
+                break;
+
+                default:
+
+                    $val->Value = $field->dataValue();
+
+                break;
+            }
 
 			$val->write();
 		}
