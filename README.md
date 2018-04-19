@@ -56,6 +56,15 @@ public function doMyForm($data, $form) {
 }
 ```
 
+When capturing a form some useful information is returned which can be used in the controller. For example a link is returned to the submission area in the CMS.
+```php
+$capturedSubmission = $form->captureForm();
+
+echo($capturedSubmission['Link']);
+// http://your-site.com/admin/<Link to exact submission>
+
+```
+
 ### Options
 When calling the captureForm() there are a few optional parameters which will enhance how submission objects are displayed in the CMS.
 
