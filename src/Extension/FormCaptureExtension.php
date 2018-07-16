@@ -108,6 +108,12 @@ class FormCaptureExtension extends Extension
 
             break;
 
+            case 'optionset checkboxset':
+
+                $val->Value = implode(', ', $field->getValueArray());
+
+            break;
+
             default:
 
                 $val->Value = $field->dataValue();
