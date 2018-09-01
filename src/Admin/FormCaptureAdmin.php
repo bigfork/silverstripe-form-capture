@@ -18,7 +18,7 @@ class MyAdmin extends ModelAdmin
 
     private static $menu_title = 'Form Submissions';
 
-    private static $menu_icon ='andrewhaine/silverstripe-form-capture:icon/captured-form-submissions.png';
+    private static $menu_icon ='andrewhaine/silverstripe-form-capture:icon/captured-form-submissions.svg';
 
     public function getEditForm($id = null, $fields = null)
 	{

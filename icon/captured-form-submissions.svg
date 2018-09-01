@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Captured Form Submissions Icon</title>
+    <desc>SilverStripe menu icon for the form capture module - designed by Andrew Haine</desc>
+    <g id="Icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" fill="#4B7E9D" fill-rule="nonzero" x="1" y="11.8" width="14" height="4.2"></rect>
+        <rect id="Rectangle-Copy" fill="#4B7E9D" fill-rule="nonzero" x="1" y="9.2" width="14" height="1.5"></rect>
+        <polygon id="Rectangle-2" fill="#4B7E9D" fill-rule="nonzero" points="3.61345951 4.68944102 5.17228611 3.13061441 8.67647981 6.68381408 7.11765321 8.24264069"></polygon>
+        <polygon id="Rectangle-2-Copy" fill="#4B7E9D" fill-rule="nonzero" points="7.76334033 7.57392545 6.20451372 6.01509885 11.9602223 0.259390292 13.5190489 1.8182169"></polygon>
+    </g>
+</svg>
