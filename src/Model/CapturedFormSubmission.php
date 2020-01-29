@@ -1,6 +1,7 @@
 <?php
 
 namespace SSFormCapture\Model;
+
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\PermissionProvider;
 use SilverStripe\Security\Permission;
@@ -87,8 +88,8 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 
 		$conf = GridFieldConfig::create();
 		$conf->addComponent(new GridFieldDataColumns());
-    $conf->addComponent(new GridFieldExportButton());
-    $conf->addComponent(new GridFieldPrintButton());
+        $conf->addComponent(new GridFieldExportButton());
+        $conf->addComponent(new GridFieldPrintButton());
 
 		$submittedFields->setConfig($conf);
 
@@ -115,22 +116,48 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 
 		$html->setValue(join('<br />', $toAdd));
 
-		return $html;
-	}
+        return $html;
+    }
 
-	/**
-	 * Ensure that all linked fields are deleted
-	 * so we don't leave any stale data behind
-	 */
-	 public function onBeforeDelete()
-	 {
+    /**
+     * Ensure that all linked fields are deleted
+     * so we don't leave any stale data behind
+     */
+     public function onBeforeDelete()
+    {
 
-		 if($this->CapturedFields()) {
-			 foreach($this->CapturedFields() as $field) {
-				 $field->delete();
-			 }
-		 }
+        if($this->CapturedFields()) {
+            foreach($this->CapturedFields() as $field) {
+                $field->delete();
+            }
+        }
 
-		 parent::onBeforeDelete();
-	 }
+        parent::onBeforeDelete();
+    }
+
+    /**
+     * @param string $fieldName
+     * @return mixed
+     */
+    public function relField($fieldName)
+    {
+        // If we're exporting, the field will be prefixed with export__ - works around issues with getTitle()
+        if (strpos($fieldName, 'export__') === 0) {
+            // Check for a submitted form field with the given name
+            $fieldName = substr($fieldName, 8);
+            $formField = CapturedField::get()->filter([
+                'SubmissionID' => $this->ID,
+                'Name' => $fieldName
+            ])->first();
+
+            if (!$formField) {
+                return null;
+            }
+
+            return $formField->dbObject('Value');
+        }
+
+        // Default case for fields on this model
+        return parent::relField($fieldName);
+    }
 }
