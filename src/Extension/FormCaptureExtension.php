@@ -91,7 +91,7 @@ class FormCaptureExtension extends Extension
             case 'groupeddropdown dropdown':
 
                 // Relevent values
-                $groupedSrc = $field->getSourceAsArray();
+                $groupedSrc = $field->getSource();
                 $selected = $field->dataValue();
 
                 // Loop through all source keys, if we find an array search it for the field value
