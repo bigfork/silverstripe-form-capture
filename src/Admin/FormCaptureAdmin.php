@@ -1,7 +1,9 @@
 <?php
 
-namespace SSFormCapture\Admin;
+namespace Bigfork\SilverstripeFormCapture\Admin;
 
+use Bigfork\SilverstripeFormCapture\Model\CapturedField;
+use Bigfork\SilverstripeFormCapture\Model\CapturedFormSubmission;
 use SilverStripe\Admin\ModelAdmin;
 use SilverStripe\Forms\DateField;
 use SilverStripe\Forms\DropdownField;
@@ -19,19 +21,18 @@ use SilverStripe\ORM\Filters\GreaterThanOrEqualFilter;
 use SilverStripe\ORM\Filters\LessThanOrEqualFilter;
 use SilverStripe\ORM\Queries\SQLSelect;
 use SilverStripe\ORM\Search\SearchContext;
-use SSFormCapture\Model\CapturedField;
-use SSFormCapture\Model\CapturedFormSubmission;
 
-class MyAdmin extends ModelAdmin
+class FormCaptureAdmin extends ModelAdmin
 {
-
-    private static $managed_models = [CapturedFormSubmission::class];
+    private static $managed_models = [
+        CapturedFormSubmission::class
+    ];
 
     private static $url_segment = 'captured-form-submissions';
 
     private static $menu_title = 'Form Submissions';
 
-    private static $menu_icon ='andrewhaine/silverstripe-form-capture:icon/captured-form-submissions.svg';
+    private static $menu_icon_class = 'font-icon-checklist';
 
     public function getEditForm($id = null, $fields = null)
 	{

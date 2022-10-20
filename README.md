@@ -1,30 +1,27 @@
 # Silverstripe Form Capture
-Provides a method to capture simple silverstripe forms and a friendly admin interface for users.
+Provides a method to capture simple Silverstripe forms and a friendly admin interface for users.
 
 <img src="docs/images/screenshot.png" width="900" height="417" />
 
 ## Installation
-This version requires silverstripe 4, for 3.1+ compatibility see the 1.* branch.
-
-Either clone/download this repository into a folder named 'silverstripe-form-capture' or run:
 
 ```
-composer require andrewhaine/silverstripe-form-capture
+composer require bigfork/silverstripe-form-capture
 ```
 
-## Initialisation
-After installing you will need to run 'dev/build' and add the module extension to the form class or any subclass of form that you wish to store.
+After installing you will need to run 'dev/build'.
 
 ## Usage
-To store submissions from a form simply add a call to the new method in the function you will use to handle the form. See the example below for usage
+To store submissions from a form simply call `$form->captureForm()` in your form handler method. See the example below for usage:
 
 ### Example
 In the page controller:
 
 ```php
-public function MyForm() {
+public function MyForm()
+{
 	$fields = FieldList::create(
-		TextField('ExampleTextField'),
+		TextField::create('ExampleTextField'),
 		TextareaField::create('ExampleTextareaField')
 	);
 
@@ -37,22 +34,25 @@ public function MyForm() {
 	return $form;
 }
 
-public function doMyForm($data, $form) {
+public function doMyForm($data, $form)
+{
 	$form->captureForm();
 
 	// Other processing
 }
 ```
+
 When capturing a form some useful information is returned which can be used in the controller. For example a link is returned to the submission area in the CMS.
+
 ```php
 $capturedSubmission = $form->captureForm();
 
 echo($capturedSubmission['Link']);
 // http://your-site.com/admin/<Link to exact submission>
-
 ```
 
 ### Options
+
 When calling the captureForm() there are a few optional parameters which will enhance how submission objects are displayed in the CMS.
 
 * __Form Submission Title__ - A string which will be displayed as the submission title in the admin area (defaults to 'Form Submission').

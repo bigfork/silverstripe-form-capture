@@ -1,0 +1,7 @@
+---
+Name: formcapturelegacy
+---
+SilverStripe\ORM\DatabaseAdmin:
+  classname_value_remapping:
+    'SSFormCapture\Model\CapturedField': 'Bigfork\SilverstripeFormCapture\Model\CapturedField'
+    'SSFormCapture\Model\CapturedFormSubmission': 'Bigfork\SilverstripeFormCapture\Model\CapturedFormSubmission'

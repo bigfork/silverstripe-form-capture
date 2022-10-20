@@ -1,11 +1,14 @@
 <?php
 
-namespace SSFormCapture\Extension;
+namespace Bigfork\SilverstripeFormCapture\Extensions;
+
+use Bigfork\SilverstripeFormCapture\Admin\FormCaptureAdmin;
+use Bigfork\SilverstripeFormCapture\Model\CapturedFormSubmission;
+use Bigfork\SilverstripeFormCapture\Model\CapturedField;
+use SilverStripe\Control\Controller;
 use SilverStripe\Core\Extension;
 use SilverStripe\Control\Director;
-use SSFormCapture\Admin\MyAdmin as FormCaptureAdmin;
-use SSFormCapture\Model\CapturedFormSubmission;
-use SSFormCapture\Model\CapturedField;
+use SilverStripe\Core\Injector\Injector;
 
 class FormCaptureExtension extends Extension
 {
@@ -134,8 +137,15 @@ class FormCaptureExtension extends Extension
      */
     private function get_submission_link($id)
     {
-        $base = Director::AbsoluteBaseURL() . singleton(FormCaptureAdmin::class)->Link();
-        $editorLink = $base . 'SSFormCapture-Model-CapturedFormSubmission/EditForm/field/SSFormCapture-Model-CapturedFormSubmission/item/';
-        return $editorLink . $id;
+        /** @var FormCaptureAdmin $admin */
+        $admin = Injector::inst()->create(FormCaptureAdmin::class);
+        return Controller::join_links(
+            Director::absoluteBaseURL(),
+            $admin->Link(),
+            str_replace('\\', '-', CapturedFormSubmission::class),
+            'EditForm/field/Submissions/item',
+            $id,
+            'edit'
+        );
     }
 }

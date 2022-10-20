@@ -1,26 +1,33 @@
 {
-  "name": "andrewhaine/silverstripe-form-capture",
-  "description": "Provides a method to capture simple silverstripe forms and a friendly admin interface for users",
-  "type": "silverstripe-vendormodule",
-  "homepage": "http://github.com/andrewhaine/silverstripe-form-capture",
-  "keywords": ["silverstripe", "forms", "capture"],
-  "license": "BSD-3-Clause",
-  "authors": [
-    {"name": "Andrew Haine","email": "hello@andrewhaine.co.uk"}
-  ],
-  "support": {
-    "issues": "http://github.com/andrewhaine/silverstripe-form-capture/issues"
-  },
-  "require": {
-    "silverstripe/cms": "~4.0",
-    "silverstripe/framework": "~4.0"
-  },
-  "suggest": {
-    "silverstripe/gridfieldqueuedexport": "Allows CSV exports of large amounts of data by processing exports in the background"
-  },
-  "extra": {
-    "expose": [
-      "icon/"
-    ]
-  }
+    "name": "bigfork/silverstripe-form-capture",
+    "description": "Provides a method to capture simple silverstripe forms and a friendly admin interface for users",
+    "type": "silverstripe-vendormodule",
+    "homepage": "http://github.com/bigfork/silverstripe-form-capture",
+    "keywords": ["silverstripe", "forms", "capture"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Andrew Haine",
+            "email": "hello@andrewhaine.co.uk"
+        },
+        {
+            "name": "Bigfork",
+            "homepage": "https://www.bigfork.co.uk"
+        }
+    ],
+    "support": {
+        "issues": "http://github.com/bigfork/silverstripe-form-capture/issues"
+    },
+    "require": {
+        "silverstripe/cms": "^4",
+        "silverstripe/framework": "^4"
+    },
+    "suggest": {
+        "silverstripe/gridfieldqueuedexport": "Allows CSV exports of large amounts of data by processing exports in the background"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bigfork\\SilverstripeFormCapture\\": "src/"
+        }
+    }
 }

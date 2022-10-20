@@ -1,6 +1,6 @@
 ---
-Name: ssformcapture
+Name: formcapture
 ---
 SilverStripe\Forms\Form:
   extensions:
-    - SSFormCapture\Extension\FormCaptureExtension
+    - Bigfork\SilverstripeFormCapture\Extensions\FormCaptureExtension
