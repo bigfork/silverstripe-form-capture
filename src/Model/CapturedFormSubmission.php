@@ -4,6 +4,7 @@ namespace Bigfork\SilverstripeFormCapture\Model;
 
 use SilverStripe\Forms\FieldList;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\HasManyList;
 use SilverStripe\Security\PermissionProvider;
 use SilverStripe\Security\Permission;
 use SilverStripe\Forms\GridField\GridField;
@@ -14,6 +15,9 @@ use SilverStripe\Forms\GridField\GridFieldPrintButton;
 use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\Forms\HeaderField;
 
+/**
+ * @method HasManyList CapturedFields()
+ */
 class CapturedFormSubmission extends DataObject implements PermissionProvider
 {
 	private static $table_name = 'FormCapture_FormSubmission';
