@@ -88,7 +88,7 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 	public function getCMSFields()
 	{
 		$this->beforeUpdateCMSFields(function (FieldList $fields) {
-            $fields->removeByName(['CapturedFields', 'Type']);
+            $fields->removeByName(['CapturedFields', 'Name', 'Email', 'Type']);
 
             $fields->addFieldsToTab(
                 'Root.Main',
