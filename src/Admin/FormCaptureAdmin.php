@@ -2,6 +2,7 @@
 
 namespace Bigfork\SilverstripeFormCapture\Admin;
 
+use Bigfork\SilverstripeFormCapture\Filters\HavingPartialMatchFilter;
 use Bigfork\SilverstripeFormCapture\Model\CapturedField;
 use Bigfork\SilverstripeFormCapture\Model\CapturedFormSubmission;
 use SilverStripe\Admin\ModelAdmin;
@@ -14,11 +15,13 @@ use SilverStripe\Forms\GridField\GridFieldFilterHeader;
 use SilverStripe\Forms\GridField\GridFieldImportButton;
 use SilverStripe\Forms\GridField\GridFieldPaginator;
 use SilverStripe\Forms\GridField\GridFieldPrintButton;
+use SilverStripe\Forms\TextField;
 use SilverStripe\GridfieldQueuedExport\Forms\GridFieldQueuedExportButton;
 use SilverStripe\ORM\ArrayLib;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\Filters\GreaterThanOrEqualFilter;
 use SilverStripe\ORM\Filters\LessThanOrEqualFilter;
+use SilverStripe\ORM\Filters\PartialMatchFilter;
 use SilverStripe\ORM\Queries\SQLSelect;
 use SilverStripe\ORM\Search\SearchContext;
 
@@ -49,12 +52,17 @@ class FormCaptureAdmin extends ModelAdmin
 		// Configure filtering options
         $updateSearchContext = function(SearchContext $context) {
             $filters = $context->getFilters();
+            $filters['Name'] = HavingPartialMatchFilter::create('NameWithFallback');
+            $filters['Email'] = HavingPartialMatchFilter::create('EmailWithFallback');
             $filters['MinDate'] = GreaterThanOrEqualFilter::create('Created');
             $filters['MaxDate'] = LessThanOrEqualFilter::create('Created');
             $context->setFilters($filters);
         };
 
         $updateSearchForm = function(Form $form) {
+            $form->Fields()->insertBefore('Search__Type', $name = TextField::create('Name', 'Name'));
+            $form->Fields()->insertBefore('Search__Type', $email = TextField::create('Email', 'Email'));
+
             // Replace free-text with dropdown of available submission types
             $types = ArrayLib::valuekey(CapturedFormSubmission::get()->columnUnique('Type'));
             $typeField = DropdownField::create('Search__Type', 'Type', $types)
@@ -65,7 +73,7 @@ class FormCaptureAdmin extends ModelAdmin
             $form->Fields()->push($minDate = DateField::create('MinDate', 'Submitted from'));
             $form->Fields()->push($maxDate = DateField::create('MaxDate', 'Submitted to'));
 
-            foreach ([$minDate, $maxDate, $typeField] as $field) {
+            foreach ([$name, $email, $minDate, $maxDate, $typeField] as $field) {
                 $field->addExtraClass('stacked')
                     ->setForm($form);
             }

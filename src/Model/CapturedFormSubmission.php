@@ -3,6 +3,7 @@
 namespace Bigfork\SilverstripeFormCapture\Model;
 
 use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\HasManyList;
 use SilverStripe\Security\PermissionProvider;
@@ -23,7 +24,9 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 	private static $table_name = 'FormCapture_FormSubmission';
 
     private static $db = [
-        'Type' => 'Text'
+        'Type' => 'Varchar(255)',
+        'Name' => 'Varchar(255)',
+        'Email' => 'Varchar(255)'
     ];
 
     private static $has_many = [
@@ -37,6 +40,8 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 	private static $summary_fields = [
         'Type',
         'Created.Nice',
+        'NameWithFallback',
+        'EmailWithFallback',
         'Details'
     ];
 
@@ -45,7 +50,9 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
     ];
 
 	private static $field_labels = [
-        'Created.Nice' => 'Submitted on'
+        'Created.Nice' => 'Submitted on',
+        'NameWithFallback' => 'Name',
+        'EmailWithFallback' => 'Email'
     ];
 
 	private static $default_sort = 'Created DESC';

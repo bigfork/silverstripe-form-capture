@@ -21,8 +21,9 @@ In the page controller:
 public function MyForm()
 {
 	$fields = FieldList::create(
-		TextField::create('ExampleTextField'),
-		TextareaField::create('ExampleTextareaField')
+		TextField::create('Name'),
+		EmailField::create('Email'),
+		TextareaField::create('Enquiry')
 	);
 
 	$actions = FieldList::create(
@@ -36,7 +37,13 @@ public function MyForm()
 
 public function doMyForm($data, $form)
 {
-	$form->captureForm();
+	$form->captureForm(
+	    'Enquiry form submission', // Required - type of form submission
+	    'Name', // Required (can be null) - form field containing the submitter's name
+	    'Email', // Required (can be null) - form field containing the submitter's email address
+	    ['Captcha'], // Optional - list of fields that shouldn't be stored
+	    ['Enquiry'] // Optional - list of fields to show in "Details" column in CMS
+	);
 
 	// Other processing
 }
@@ -45,22 +52,8 @@ public function doMyForm($data, $form)
 When capturing a form some useful information is returned which can be used in the controller. For example a link is returned to the submission area in the CMS.
 
 ```php
-$capturedSubmission = $form->captureForm();
+$capturedSubmission = $form->captureForm('Contact form', null, null);
 
 echo($capturedSubmission['Link']);
 // http://your-site.com/admin/<Link to exact submission>
-```
-
-### Options
-
-When calling the captureForm() there are a few optional parameters which will enhance how submission objects are displayed in the CMS.
-
-* __Form Submission Title__ - A string which will be displayed as the submission title in the admin area (defaults to 'Form Submission').
-* __Excluded Fields__ - An array of field names which will not be stored, this can also be a string containing the name of a single field to exclude.
-* __Details Fields__ - An array of fields which will be included in the 'details' column of the gridfield, this can also be a string containing the name of a single field to include in the details.
-
-#### Example
-
-```php
-$form->captureForm('Contact Form Submission', ['IDontWantThisField', 'OrThisOne'], 'Details');
 ```

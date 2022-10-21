@@ -33,16 +33,30 @@ class FormCaptureExtension extends Extension
      * @return array Tuple containing: ID (submission ID) and Link (link to submission in CMS)
      * @throws ValidationException
      */
-	public function captureForm(string $formDescription, array $excludedFields = [], array $inDetails = []): array
+	public function captureForm(
+        string $formDescription,
+        ?string $nameField,
+        ?string $emailField,
+        array $excludedFields = [],
+        array $inDetails = []
+    ): array
     {
+        /** @var Form $form */
+        $form = $this->getOwner();
+
 		// Create a blank form submission
 		$submission = CapturedFormSubmission::create(['Type' => $formDescription]);
+
+        if ($nameField && $nameFormField = $form->Fields()->dataFieldByName($nameField)) {
+            $submission->Name = $this->extractValueFromFormField($nameFormField);
+        }
+        if ($emailField && $emailFormField = $form->Fields()->dataFieldByName($emailField)) {
+            $submission->Email = $this->extractValueFromFormField($emailFormField);
+        }
 
         // Push default exclusions
 		$excludedFields = array_merge($excludedFields, $this->config()->get('default_excluded_fields'));
 
-        /** @var Form $form */
-        $form = $this->getOwner();
 		// For every field create a CapturedField object and add it to this submission
 		foreach ($form->Fields()->dataFields() as $field) {
             // Ignore any excluded fields
@@ -72,16 +86,20 @@ class FormCaptureExtension extends Extension
     {
         $val = CapturedField::create();
 
-        $field->performReadonlyTransformation();
         $val->Name = $field->getName();
         $val->Title = $field->Title() ?: $field->getName;
         $val->IsInDetails = $showInDetails;
+        $val->Value = $this->extractValueFromFormField($field);
 
+        return $val;
+    }
+
+    protected function extractValueFromFormField(FormField $field)
+    {
         // todo - make this logic extensible
         switch (true) {
             case $field instanceof CheckboxField:
-                $val->Value = $field->dataValue() === 1 ? 'Yes' : 'No';
-                break;
+                return $field->dataValue() === 1 ? 'Yes' : 'No';
             case $field instanceof GroupedDropdownField:
                 $selected = $field->dataValue();
 
@@ -93,17 +111,12 @@ class FormCaptureExtension extends Extension
                     }
                 }
 
-                $val->Value = $parentGroupTitle ? "[{$parentGroupTitle}] {$selected}" : $selected;
-                break;
+                return $parentGroupTitle ? "[{$parentGroupTitle}] {$selected}" : $selected;
             case $field instanceof CheckboxSetField:
-                $val->Value = implode(', ', $field->getValueArray());
-                break;
-            default:
-                $val->Value = $field->dataValue();
-                break;
+                return implode(', ', $field->getValueArray());
         }
 
-        return $val;
+        return $field->dataValue();
     }
 
     /**

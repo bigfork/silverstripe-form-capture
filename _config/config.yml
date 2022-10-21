@@ -1,6 +1,9 @@
 ---
 Name: formcapture
 ---
+Bigfork\SilverstripeFormCapture\Model\CapturedFormSubmission:
+  extensions:
+    - Bigfork\SilverstripeFormCapture\Extensions\CapturedFormSubmissionExtension
 SilverStripe\Forms\Form:
   extensions:
     - Bigfork\SilverstripeFormCapture\Extensions\FormCaptureExtension
