@@ -57,3 +57,12 @@ $capturedSubmission = $form->captureForm('Contact form', null, null);
 echo($capturedSubmission['Link']);
 // http://your-site.com/admin/<Link to exact submission>
 ```
+
+### Clearing old submissions
+
+You can use the `ClearOldSubmissionsTask` to automatically delete form submissions older than a pre-defined age. To use this task, you must first configure the maximum age of form submissions:
+
+```yml
+Bigfork\SilverstripeFormCapture\Tasks\ClearOldSubmissionsTask:
+  max_age_days: 90
+```

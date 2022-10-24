@@ -33,6 +33,12 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
         'CapturedFields' => CapturedField::class
     ];
 
+    private static $cascade_deletes = [
+        'CapturedFields'
+    ];
+
+    private static $default_sort = 'Created DESC';
+
 	private static $singular_name = 'Form Submission';
 
 	private static $plural_name = 'Form Submissions';
@@ -55,38 +61,36 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
         'EmailWithFallback' => 'Email'
     ];
 
-	private static $default_sort = 'Created DESC';
-
-	public function providePermissions()
-	{
+	public function providePermissions(): array
+    {
 		return [
 			'VIEW_FORM_SUBMISSIONS' => 'View Submissions',
 			'DELETE_FORM_SUBMISSIONS' => 'Delete Submissions'
 		];
 	}
 
-	public function canView($member = null)
+	public function canView($member = null): bool
     {
 		return Permission::check('VIEW_FORM_SUBMISSIONS');
 	}
 
-	public function canDelete($member= null)
+	public function canDelete($member= null): bool
     {
 		return Permission::check('DELETE_FORM_SUBMISSIONS');
 	}
 
-	public function canEdit($member = null)
+	public function canEdit($member = null): bool
     {
 		return Permission::check('VIEW_FORM_SUBMISSIONS');
 	}
 
-	public function canCreate($member = null, $context = [])
+	public function canCreate($member = null, $context = []): bool
     {
 		return false;
 	}
 
-	public function getCMSFields()
-	{
+	public function getCMSFields(): FieldList
+    {
 		$this->beforeUpdateCMSFields(function (FieldList $fields) {
             $fields->removeByName(['CapturedFields', 'Name', 'Email', 'Type']);
 
@@ -119,7 +123,7 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 		return parent::getCMSFields();
 	}
 
-	public function Details()
+	public function Details(): DBHTMLText
     {
 		$html = DBHTMLText::create();
 		$toAdd = [];
@@ -131,24 +135,11 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
             }
 
 			$htmlEnt = '<strong>'. $field->Title .'</strong>: '. $field->Value;
-			array_push($toAdd, $htmlEnt);
+			$toAdd[] = $htmlEnt;
 		}
 
 		$html->setValue(join('<br />', $toAdd));
         return $html;
-    }
-
-    /**
-     * Ensure that all linked fields are deleted
-     * so we don't leave any stale data behind
-     */
-    public function onBeforeDelete()
-    {
-        foreach ($this->CapturedFields() as $field) {
-            $field->delete();
-        }
-
-        parent::onBeforeDelete();
     }
 
     /**
