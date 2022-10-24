@@ -84,19 +84,19 @@ class FormCaptureExtension extends Extension
      */
     protected function createCapturedField(FormField $field, bool $showInDetails = false): CapturedField
     {
-        $val = CapturedField::create();
+        $capturedField = CapturedField::create([
+            'Name' => $field->getName(),
+            'Title' => $field->Title() ?: $field->getName(),
+            'IsInDetails' => $showInDetails,
+            'Value' => $this->extractValueFromFormField($field)
+        ]);
 
-        $val->Name = $field->getName();
-        $val->Title = $field->Title() ?: $field->getName;
-        $val->IsInDetails = $showInDetails;
-        $val->Value = $this->extractValueFromFormField($field);
-
-        return $val;
+        $this->owner->extend('updateCapturedField', $capturedField);
+        return $capturedField;
     }
 
     protected function extractValueFromFormField(FormField $field)
     {
-        // todo - make this logic extensible
         switch (true) {
             case $field instanceof CheckboxField:
                 return $field->dataValue() === 1 ? 'Yes' : 'No';
