@@ -66,3 +66,7 @@ You can use the `ClearOldSubmissionsTask` to automatically delete form submissio
 Bigfork\SilverstripeFormCapture\Tasks\ClearOldSubmissionsTask:
   max_age_days: 90
 ```
+
+## Credit
+
+Thank you to [Andrew Haine](https://github.com/AndrewHaine) for building the original Silverstripe Form Capture module and allowing us to take over maintenance & development.
