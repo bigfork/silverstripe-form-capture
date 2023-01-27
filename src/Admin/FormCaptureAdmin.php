@@ -10,6 +10,7 @@ use SilverStripe\Forms\DateField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\Form;
 use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldConfig;
 use SilverStripe\Forms\GridField\GridFieldExportButton;
 use SilverStripe\Forms\GridField\GridFieldFilterHeader;
 use SilverStripe\Forms\GridField\GridFieldImportButton;
@@ -21,7 +22,6 @@ use SilverStripe\ORM\ArrayLib;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\Filters\GreaterThanOrEqualFilter;
 use SilverStripe\ORM\Filters\LessThanOrEqualFilter;
-use SilverStripe\ORM\Filters\PartialMatchFilter;
 use SilverStripe\ORM\Queries\SQLSelect;
 use SilverStripe\ORM\Search\SearchContext;
 
@@ -37,19 +37,23 @@ class FormCaptureAdmin extends ModelAdmin
 
     private static $menu_icon_class = 'font-icon-checklist';
 
-    public function getEditForm($id = null, $fields = null)
-	{
-		$form = parent::getEditForm();
+    public function getGridField(): GridField
+    {
+        $field = parent::getGridField();
+        $field->setName('Submissions');
 
-		/** @var GridField $gridField */
-		$gridField = $form->Fields()->dataFieldByName($this->sanitiseClassName($this->modelClass));
-		$gridField->setName('Submissions');
+        $this->extend('updateGridField', $field);
 
-		$config = $gridField->getConfig();
-		$config->removeComponentsByType(GridFieldImportButton::class);
-		$config->removeComponentsByType(GridFieldPrintButton::class);
+        return $field;
+    }
 
-		// Configure filtering options
+    public function getGridFieldConfig(): GridFieldConfig
+    {
+        $config = parent::getGridFieldConfig();
+        $config->removeComponentsByType(GridFieldImportButton::class);
+        $config->removeComponentsByType(GridFieldPrintButton::class);
+
+        // Configure filtering options
         $updateSearchContext = function(SearchContext $context) {
             $filters = $context->getFilters();
             $filters['Name'] = HavingPartialMatchFilter::create('NameWithFallback');
@@ -57,6 +61,8 @@ class FormCaptureAdmin extends ModelAdmin
             $filters['MinDate'] = GreaterThanOrEqualFilter::create('Created');
             $filters['MaxDate'] = LessThanOrEqualFilter::create('Created');
             $context->setFilters($filters);
+
+            $this->extend('updateSearchContext', $context);
         };
 
         $updateSearchForm = function(Form $form) {
@@ -77,6 +83,12 @@ class FormCaptureAdmin extends ModelAdmin
                 $field->addExtraClass('stacked')
                     ->setForm($form);
             }
+
+            // Remove scaffolded fields
+            $form->Fields()->removeByName('Search__NameWithFallback');
+            $form->Fields()->removeByName('Search__EmailWithFallback');
+
+            $this->extend('updateSearchForm', $form);
         };
 
         $config->removeComponentsByType(GridFieldFilterHeader::class);
@@ -97,6 +109,7 @@ class FormCaptureAdmin extends ModelAdmin
             'Type' => 'Type',
             'Created' => 'Date'
         ];
+
         foreach ($columnSelect->execute() as $row) {
             $columns["export__{$row['Name']}"] = $row['Name'];
         }
@@ -112,7 +125,8 @@ class FormCaptureAdmin extends ModelAdmin
         $config->addComponent($export);
         $export->setExportColumns($columns);
 
-		return $form;
-	}
+        $this->extend('updateGridFieldConfig', $config);
 
+        return $config;
+    }
 }
