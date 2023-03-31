@@ -109,7 +109,7 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 
 			if(!$field->Value) continue;
 
-			$htmlEnt = '<strong>'. $field->Title .'</strong>: '. $field->Value;
+			$htmlEnt = '<strong>'. $field->Title .'</strong>: '. $field->dbObject('Value')->forTemplate();
 			array_push($toAdd, $htmlEnt);
 
 		}
