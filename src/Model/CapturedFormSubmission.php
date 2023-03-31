@@ -134,7 +134,7 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
                 continue;
             }
 
-			$htmlEnt = '<strong>'. $field->Title .'</strong>: '. $field->Value;
+			$htmlEnt = '<strong>'. $field->Title .'</strong>: '. $field->dbObject('Value')->forTemplate();
 			$toAdd[] = $htmlEnt;
 		}
 
