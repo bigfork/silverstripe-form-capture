@@ -31,21 +31,41 @@ class CapturedField extends DataObject
 
 	public function canView($member = null)
     {
+        $extended = $this->extendedCan(__FUNCTION__, $member);
+        if ($extended !== null) {
+            return $extended;
+        }
+
 		return Permission::check('VIEW_FORM_SUBMISSIONS');
 	}
 
 	public function canDelete($member= null)
     {
+        $extended = $this->extendedCan(__FUNCTION__, $member);
+        if ($extended !== null) {
+            return $extended;
+        }
+
 		return Permission::check('DELETE_FORM_SUBMISSIONS');
 	}
 
 	public function canEdit($member = null)
     {
+        $extended = $this->extendedCan(__FUNCTION__, $member);
+        if ($extended !== null) {
+            return $extended;
+        }
+
 		return Permission::check('VIEW_FORM_SUBMISSIONS');
 	}
 
 	public function canCreate($member = null, $context = [])
     {
+        $extended = $this->extendedCan(__FUNCTION__, $member, $context = []);
+        if ($extended !== null) {
+            return $extended;
+        }
+
 		return false;
 	}
 }

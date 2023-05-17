@@ -71,21 +71,41 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
 
 	public function canView($member = null): bool
     {
+        $extended = $this->extendedCan(__FUNCTION__, $member);
+        if ($extended !== null) {
+            return $extended;
+        }
+
 		return Permission::check('VIEW_FORM_SUBMISSIONS');
 	}
 
 	public function canDelete($member= null): bool
     {
+        $extended = $this->extendedCan(__FUNCTION__, $member);
+        if ($extended !== null) {
+            return $extended;
+        }
+
 		return Permission::check('DELETE_FORM_SUBMISSIONS');
 	}
 
 	public function canEdit($member = null): bool
     {
+        $extended = $this->extendedCan(__FUNCTION__, $member);
+        if ($extended !== null) {
+            return $extended;
+        }
+
 		return Permission::check('VIEW_FORM_SUBMISSIONS');
 	}
 
 	public function canCreate($member = null, $context = []): bool
     {
+        $extended = $this->extendedCan(__FUNCTION__, $member);
+        if ($extended !== null) {
+            return $extended;
+        }
+
 		return false;
 	}
 
