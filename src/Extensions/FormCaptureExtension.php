@@ -15,6 +15,7 @@ use SilverStripe\Forms\CheckboxSetField;
 use SilverStripe\Forms\Form;
 use SilverStripe\Forms\FormField;
 use SilverStripe\Forms\GroupedDropdownField;
+use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\ORM\ValidationException;
 
 class FormCaptureExtension extends Extension
@@ -84,9 +85,14 @@ class FormCaptureExtension extends Extension
      */
     protected function createCapturedField(FormField $field, bool $showInDetails = false): CapturedField
     {
+        $label = $field->Title() ?: $field->getName();
+        if ($label instanceof DBHTMLText) {
+            $label = $label->Plain();
+        }
+
         $capturedField = CapturedField::create([
             'Name' => $field->getName(),
-            'Title' => $field->Title() ?: $field->getName(),
+            'Title' => $label,
             'IsInDetails' => $showInDetails,
             'Value' => $this->extractValueFromFormField($field)
         ]);
