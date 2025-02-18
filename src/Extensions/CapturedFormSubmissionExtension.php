@@ -32,6 +32,8 @@ CASE
         FROM "{$capturedFieldTable}"
         WHERE "{$capturedFieldTable}"."Name" IN ('Name', 'Surname', 'FullName')
         AND "{$capturedFieldTable}"."SubmissionID" = "{$formCaptureTable}"."ID"
+        AND "{$capturedFieldTable}"."Value" IS NOT NULL
+        LIMIT 1
     )
     ELSE Name END
 SQL
@@ -47,6 +49,8 @@ CASE
         FROM "{$capturedFieldTable}"
         WHERE "{$capturedFieldTable}"."Name" IN ('Email', 'EmailAddress')
         AND "{$capturedFieldTable}"."SubmissionID" = "{$formCaptureTable}"."ID"
+        AND "{$capturedFieldTable}"."Value" IS NOT NULL
+        LIMIT 1
     )
     ELSE Email END
 SQL
