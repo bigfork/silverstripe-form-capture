@@ -19,8 +19,9 @@
         "issues": "http://github.com/bigfork/silverstripe-form-capture/issues"
     },
     "require": {
-        "silverstripe/cms": "^4 || ^5",
-        "silverstripe/framework": "^4 || ^5"
+        "php": "^8.3",
+        "silverstripe/cms": "^6",
+        "silverstripe/framework": "^6"
     },
     "suggest": {
         "silverstripe/gridfieldqueuedexport": "Allows CSV exports of large amounts of data by processing exports in the background"

@@ -3,6 +3,13 @@ Provides a method to capture simple Silverstripe forms and a friendly admin inte
 
 <img src="docs/images/screenshot.png" width="900" height="417" />
 
+## Requirements
+* PHP ^8.3
+* silverstripe/framework ^6
+* silverstripe/cms ^6
+
+For Silverstripe CMS 4/5 support, use an earlier release of this module.
+
 ## Installation
 
 ```

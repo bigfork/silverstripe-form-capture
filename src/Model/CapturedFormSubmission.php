@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bigfork\SilverstripeFormCapture\Model;
 
 use SilverStripe\Forms\FieldList;
@@ -21,29 +23,29 @@ use SilverStripe\Forms\HeaderField;
  */
 class CapturedFormSubmission extends DataObject implements PermissionProvider
 {
-	private static $table_name = 'FormCapture_FormSubmission';
+	private static string $table_name = 'FormCapture_FormSubmission';
 
-    private static $db = [
+    private static array $db = [
         'Type' => 'Varchar(255)',
         'Name' => 'Varchar(255)',
         'Email' => 'Varchar(255)'
     ];
 
-    private static $has_many = [
+    private static array $has_many = [
         'CapturedFields' => CapturedField::class
     ];
 
-    private static $cascade_deletes = [
+    private static array $cascade_deletes = [
         'CapturedFields'
     ];
 
-    private static $default_sort = 'Created DESC';
+    private static string $default_sort = 'Created DESC';
 
-	private static $singular_name = 'Form Submission';
+	private static string $singular_name = 'Form Submission';
 
-	private static $plural_name = 'Form Submissions';
+	private static string $plural_name = 'Form Submissions';
 
-	private static $summary_fields = [
+	private static array $summary_fields = [
         'Type',
         'Created.Nice',
         'NameWithFallback',
@@ -51,11 +53,11 @@ class CapturedFormSubmission extends DataObject implements PermissionProvider
         'Details'
     ];
 
-	private static $searchable_fields = [
+	private static array $searchable_fields = [
         'Type'
     ];
 
-	private static $field_labels = [
+	private static array $field_labels = [
         'Created.Nice' => 'Submitted on',
         'NameWithFallback' => 'Name',
         'EmailWithFallback' => 'Email'

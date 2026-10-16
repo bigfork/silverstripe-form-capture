@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bigfork\SilverstripeFormCapture\Extensions;
 
 use Bigfork\SilverstripeFormCapture\Filters\HavingPartialMatchFilter;

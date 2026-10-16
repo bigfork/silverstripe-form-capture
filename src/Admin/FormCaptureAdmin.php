@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bigfork\SilverstripeFormCapture\Admin;
 
 use Bigfork\SilverstripeFormCapture\Filters\HavingPartialMatchFilter;
 use Bigfork\SilverstripeFormCapture\Model\CapturedField;
 use Bigfork\SilverstripeFormCapture\Model\CapturedFormSubmission;
 use SilverStripe\Admin\ModelAdmin;
+use SilverStripe\Core\ArrayLib;
 use SilverStripe\Forms\DateField;
 use SilverStripe\Forms\DropdownField;
-use SilverStripe\Forms\Form;
+use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldConfig;
 use SilverStripe\Forms\GridField\GridFieldExportButton;
@@ -18,7 +21,6 @@ use SilverStripe\Forms\GridField\GridFieldPaginator;
 use SilverStripe\Forms\GridField\GridFieldPrintButton;
 use SilverStripe\Forms\TextField;
 use SilverStripe\GridfieldQueuedExport\Forms\GridFieldQueuedExportButton;
-use SilverStripe\ORM\ArrayLib;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\Filters\GreaterThanOrEqualFilter;
 use SilverStripe\ORM\Filters\LessThanOrEqualFilter;
@@ -27,15 +29,15 @@ use SilverStripe\ORM\Search\SearchContext;
 
 class FormCaptureAdmin extends ModelAdmin
 {
-    private static $managed_models = [
+    private static array $managed_models = [
         CapturedFormSubmission::class
     ];
 
-    private static $url_segment = 'captured-form-submissions';
+    private static string $url_segment = 'captured-form-submissions';
 
-    private static $menu_title = 'Form Submissions';
+    private static string $menu_title = 'Form Submissions';
 
-    private static $menu_icon_class = 'font-icon-checklist';
+    private static string $menu_icon_class = 'font-icon-checklist';
 
     public function getGridField(): GridField
     {
@@ -53,45 +55,31 @@ class FormCaptureAdmin extends ModelAdmin
             $config->removeComponentsByType(GridFieldPrintButton::class);
 
             // Configure filtering options
-            $updateSearchContext = function (SearchContext $context) {
-                $filters = $context->getFilters();
-                $filters['Name'] = HavingPartialMatchFilter::create('NameWithFallback');
-                $filters['Email'] = HavingPartialMatchFilter::create('EmailWithFallback');
-                $filters['MinDate'] = GreaterThanOrEqualFilter::create('Created');
-                $filters['MaxDate'] = LessThanOrEqualFilter::create('Created');
-                $context->setFilters($filters);
+            // Start from the model's own default filters (e.g. "Type") and add our custom ones on top
+            $filters = CapturedFormSubmission::singleton()->getDefaultSearchContext()->getFilters();
+            $filters['Name'] = HavingPartialMatchFilter::create('NameWithFallback');
+            $filters['Email'] = HavingPartialMatchFilter::create('EmailWithFallback');
+            $filters['MinDate'] = GreaterThanOrEqualFilter::create('Created');
+            $filters['MaxDate'] = LessThanOrEqualFilter::create('Created');
 
-                $this->extend('updateSearchContext', $context);
-            };
+            // Replace free-text "Type" search with a dropdown of available submission types
+            $types = ArrayLib::valuekey(CapturedFormSubmission::get()->columnUnique('Type'));
+            $typeField = DropdownField::create('Type', 'Type', $types)
+                ->setEmptyString(_t('SilverStripe\\Forms\\DropdownField.CHOOSE', '(Choose)'));
 
-            $updateSearchForm = function (Form $form) {
-                $form->Fields()->insertBefore('Search__Type', $name = TextField::create('Name', 'Name'));
-                $form->Fields()->insertBefore('Search__Type', $email = TextField::create('Email', 'Email'));
+            $fields = FieldList::create(
+                TextField::create('Name', 'Name'),
+                TextField::create('Email', 'Email'),
+                $typeField,
+                DateField::create('MinDate', 'Submitted from'),
+                DateField::create('MaxDate', 'Submitted to')
+            );
 
-                // Replace free-text with dropdown of available submission types
-                $types = ArrayLib::valuekey(CapturedFormSubmission::get()->columnUnique('Type'));
-                $typeField = DropdownField::create('Search__Type', 'Type', $types)
-                    ->setEmptyString(_t('SilverStripe\\Forms\\DropdownField.CHOOSE', '(Choose)'))
-                    ->addExtraClass('stacked');
-
-                $form->Fields()->replaceField('Search__Type', $typeField);
-                $form->Fields()->push($minDate = DateField::create('MinDate', 'Submitted from'));
-                $form->Fields()->push($maxDate = DateField::create('MaxDate', 'Submitted to'));
-
-                foreach ([$name, $email, $minDate, $maxDate, $typeField] as $field) {
-                    $field->addExtraClass('stacked')
-                        ->setForm($form);
-                }
-
-                // Remove scaffolded fields
-                $form->Fields()->removeByName('Search__NameWithFallback');
-                $form->Fields()->removeByName('Search__EmailWithFallback');
-
-                $this->extend('updateSearchForm', $form);
-            };
+            $searchContext = SearchContext::create(CapturedFormSubmission::class, $fields, $filters);
+            $this->extend('updateSearchContext', $searchContext);
 
             $config->removeComponentsByType(GridFieldFilterHeader::class);
-            $config->addComponent(new GridFieldFilterHeader(false, $updateSearchContext, $updateSearchForm));
+            $config->addComponent((new GridFieldFilterHeader())->setSearchContext($searchContext));
             // Filter only updates page indicators if paginator is added *after* it, so we have to remove and re-add it
             // See https://github.com/silverstripe/silverstripe-framework/issues/8454
             $config->removeComponentsByType(GridFieldPaginator::class);

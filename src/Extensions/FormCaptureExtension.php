@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bigfork\SilverstripeFormCapture\Extensions;
 
 use Bigfork\SilverstripeFormCapture\Admin\FormCaptureAdmin;
@@ -10,19 +12,19 @@ use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Core\Extension;
 use SilverStripe\Core\Injector\Injector;
+use SilverStripe\Core\Validation\ValidationException;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\CheckboxSetField;
 use SilverStripe\Forms\Form;
 use SilverStripe\Forms\FormField;
 use SilverStripe\Forms\GroupedDropdownField;
 use SilverStripe\ORM\FieldType\DBHTMLText;
-use SilverStripe\ORM\ValidationException;
 
 class FormCaptureExtension extends Extension
 {
     use Configurable;
 
-    private static $default_excluded_fields = [
+    private static array $default_excluded_fields = [
         'SecurityID',
         'Captcha'
     ];

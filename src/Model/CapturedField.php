@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Bigfork\SilverstripeFormCapture\Model;
 
 use SilverStripe\ORM\DataObject;
@@ -7,24 +9,24 @@ use SilverStripe\Security\Permission;
 
 class CapturedField extends DataObject
 {
-	private static $table_name = 'FormCapture_CapturedField';
+	private static string $table_name = 'FormCapture_CapturedField';
 
-    private static $db = [
+    private static array $db = [
         'Name' => 'Text',
         'Title' => 'Text',
         'Value' => 'Text',
         'IsInDetails' => 'Boolean'
     ];
 
-    private static $has_one = [
+    private static array $has_one = [
         'Submission' => CapturedFormSubmission::class
     ];
 
-	private static $singular_name = 'CapturedField';
+	private static string $singular_name = 'CapturedField';
 
-	private static $plural_name = 'Captured Fields';
+	private static string $plural_name = 'Captured Fields';
 
-	private static $summary_fields = [
+	private static array $summary_fields = [
         'Title',
         'Value'
     ];
